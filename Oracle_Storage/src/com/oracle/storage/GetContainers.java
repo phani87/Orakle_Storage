@@ -15,6 +15,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.oracle.storage.helper.GetURLs;
+
 public class GetContainers {
 	final static Logger logger = Logger.getLogger(GetContainers.class.getSimpleName()) ;
 
@@ -27,10 +29,10 @@ public class GetContainers {
 		try {
 
 			HttpClient client = new DefaultHttpClient();
-			HttpGet getContinerRequest = new HttpGet(getContainerURL());
+			HttpGet getContinerRequest = new HttpGet(new GetURLs().getContainerURL());
 
 			// add request header
-			getContinerRequest.addHeader("X-Auth-Token", getAuthHeaders().get("X-Auth-Token"));
+			getContinerRequest.addHeader("X-Auth-Token", new GetURLs().getAuthHeaders().get("X-Auth-Token") );
 
 			HttpResponse containerResponse = client.execute(getContinerRequest);
 
@@ -53,7 +55,7 @@ public class GetContainers {
 		return result.toString();
 
 	}
-
+/*
 	private Map<String, String> getAuthHeaders() {
 		Map<String, String> authMap = new HashMap<>();
 
@@ -63,7 +65,7 @@ public class GetContainers {
 
 		try {
 
-			input = new FileInputStream("D:\\Workspace_I\\Oracle_Storage\\WebContent\\properties\\auth.properties");
+			input = new FileInputStream("D:\\Oracle_Storage\\Oracle_Storage\\WebContent\\properties\\auth.properties");
 
 			prop.load(input);
 
@@ -82,16 +84,16 @@ public class GetContainers {
 		}
 		return authMap;
 
-	}
+	}*/
 
-	private String getContainerURL() {
+	/*private String getContainerURL() {
 		Properties prop = new Properties();
 		InputStream input = null;
 		String auth_url = "";
 
 		try {
 
-			input = new FileInputStream("D:\\Workspace_I\\Oracle_Storage\\WebContent\\properties\\urls.properties");
+			input = new FileInputStream("D:\\Oracle_Storage\\Oracle_Storage\\WebContent\\properties\\urls.properties");
 
 			prop.load(input);
 
@@ -110,7 +112,7 @@ public class GetContainers {
 		}
 		return auth_url;
 
-	}
+	}*/
 
 	public static void main(String[] args) {
 		GetContainers containers = new GetContainers();

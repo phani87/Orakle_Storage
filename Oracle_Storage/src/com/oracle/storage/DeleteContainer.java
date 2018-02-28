@@ -14,7 +14,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.impl.client.DefaultHttpClient;	
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import com.oracle.storage.helper.GetURLs;	
 
 public class DeleteContainer {
 
@@ -29,8 +31,8 @@ public class DeleteContainer {
 		try {
 
 			HttpClient client = new DefaultHttpClient();
-			logger.info(getContainerURL().toString()+"/"+cloud_container_name);
-			HttpDelete getContinerRequest = new HttpDelete(getContainerURL().toString()+"/"+cloud_container_name);
+			logger.info(new GetURLs().getContainerURL().toString()+"/"+cloud_container_name);
+			HttpDelete getContinerRequest = new HttpDelete(new GetURLs().getContainerURL().toString()+"/"+cloud_container_name);
 
 			// add request header
 			getContinerRequest.addHeader("X-Auth-Token", getAuthHeaders().get("X-Auth-Token"));
@@ -39,22 +41,23 @@ public class DeleteContainer {
 
 
 			//BufferedReader rd = new BufferedReader(new InputStreamReader(containerResponse.getStatusLine());
-			String respose_status = containerResponse.getStatusLine().toString();
-
-			result = new StringBuffer();
-			result.append("{\n");
-			/*int i=1;
-			String line = "";
-			while ((line = rd.readLine()) != null) {
-				if("Token not found in cache".equalsIgnoreCase(line)) {
-					new StorageAuth().getAuthToken();
-					new DeleteContainer().deleteContainerImpl(cloud_container_name);
-				}
-				result.append("\"containerName"+Integer.toString(i)+"\" : \""+line+"\", \n");
-				i++;
-			}*/
-			result.append("\"delete_response\" :\""+respose_status+"\"\n}");
-			// return result.toString();
+			int response_code = containerResponse.getStatusLine().getStatusCode();
+			String respose_status = containerResponse.getStatusLine().getReasonPhrase().toString();
+			if(response_code==204) {
+				result = new StringBuffer();
+				result.append("{\n");
+				
+				result.append("\"delete_response\" :\""+respose_status+"\",\n");
+				result.append("\"delete_code\" :\""+respose_status+"\"}");
+			}
+			else {
+				result = new StringBuffer();
+				result.append("{\n");
+				
+				result.append("\"delete_response\" :\"Unsuccessful Delete\",\n");
+				result.append("\"delete_code\" :\"\"+450+\"\"}");
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -92,7 +95,7 @@ public class DeleteContainer {
 
 	}
 
-	private String getContainerURL() {
+	/*private String getContainerURL() {
 		Properties prop = new Properties();
 		InputStream input = null;
 		String auth_url = "";
@@ -118,7 +121,7 @@ public class DeleteContainer {
 		}
 		return auth_url;
 
-	}
+	}*/
 
 	public static void main(String[] args) {
 		GetContainers containers = new GetContainers();

@@ -12,44 +12,58 @@ import java.util.logging.Logger;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.oracle.storage.helper.GetURLs;
 
-public class ListContainerObjects {
-
-	final static Logger logger = Logger.getLogger(ListContainerObjects.class.getSimpleName()) ;
+public class UploadObject {
 
 
-	public String getContainerListObjects(String cloud_container_name) {
-		logger.info("-------GET CONTAINER OBJECTS---------");
+	final static Logger logger = Logger.getLogger(UploadObject.class.getSimpleName()) ;
+
+
+	public String uploadObjectImpl(String cloud_container_name, InputStream cloud_object_name) {
+		logger.info("-------CREATE CONTAINER---------");
 		StringBuffer result = null;
 
 
 		try {
 
 			HttpClient client = new DefaultHttpClient();
-			HttpGet getContinerRequest = new HttpGet(new GetURLs().getContainerURL().toString()+"/"+cloud_container_name);
+			logger.info(new GetURLs().getContainerURL().toString()+"/"+cloud_container_name);
+			HttpPut putFileRequest = new HttpPut(new GetURLs().	getContainerURL().toString()+"/"+cloud_container_name+"/"+cloud_object_name);
 
 			// add request header
-			getContinerRequest.addHeader("X-Auth-Token", new GetURLs().getAuthHeaders().get("X-Auth-Token"));
+//			putFileRequest.addHeader("X-Auth-Token", new GetURLs().getAuthHeaders().get("X-Auth-Token"));
+//			MultipartEntity entity = new MultipartEntity();
+//			entity.addPart("file", new FileBody(new File()));
+//			post.setEntity(entity);
 
-			HttpResponse containerResponse = client.execute(getContinerRequest);
+			HttpResponse containerResponse = client.execute(putFileRequest);
 
 
-			BufferedReader rd = new BufferedReader(new InputStreamReader(containerResponse.getEntity().getContent()));
+			//BufferedReader rd = new BufferedReader(new InputStreamReader(containerResponse.getEntity().getContent()));
+			
+			int response_code = containerResponse.getStatusLine().getStatusCode();
+			String respose_status = containerResponse.getStatusLine().getReasonPhrase().toString();
 
-			result = new StringBuffer();
-			result.append("{\n");
-			int i=1;
-			String line = "";
-			while ((line = rd.readLine()) != null) {
-					result.append("\"objName"+Integer.toString(i)+"\" : \""+line+"\", \n");
-					i++;
+			if(response_code==201) {
+				result = new StringBuffer();
+				result.append("{\n");
+				
+				result.append("\"created_response\" :\""+respose_status+"\",\n");
+				result.append("\"created_code\" :\""+response_code+"\"}");
 			}
-			result.append("\"totalObjs\" :\""+Integer.toString(i-1)+"\"\n}");
-			// return result.toString();
+			else {
+				result = new StringBuffer();
+				result.append("{\n");
+				
+				result.append("\"created_response\" :\"Unsuccessful upload\",\n");
+				result.append("\"created_code\" :\"\"+451+\"\"}");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -121,5 +135,6 @@ public class ListContainerObjects {
 	}
 	
 
-	
+
+
 }

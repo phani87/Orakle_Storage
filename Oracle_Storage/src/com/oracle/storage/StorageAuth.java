@@ -14,6 +14,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.oracle.storage.helper.GetURLs;
+
 public class StorageAuth {
 
 	private String AUTH_URL = "https://Storage-gse00013232.storage.oraclecloud.com/auth/v1.0";
@@ -25,8 +27,8 @@ public class StorageAuth {
 		try {
 			
 			HttpClient client = new DefaultHttpClient();
-			HttpGet getAuthReq = new HttpGet(getAuthURL());
-
+			HttpGet getAuthReq = new HttpGet(new GetURLs().getAuthURL());
+			logger.info(new GetURLs().getAuthURL().toString());
 			// add request header
 			getAuthReq.addHeader("X-Storage-User", "Storage-"+cloud_storage_container+":"+cloud_username);
 			getAuthReq.addHeader("X-Storage-Pass", cloud_password);
@@ -35,7 +37,7 @@ public class StorageAuth {
 			HttpResponse authResponse = client.execute(getAuthReq);
 
 			Header[] responseHeaders = authResponse.getAllHeaders();
-			FileOutputStream fileOutputStream = new FileOutputStream("D:\\Workspace_I\\Oracle_Storage\\WebContent\\properties\\auth.properties");
+			FileOutputStream fileOutputStream = new FileOutputStream("D:\\Oracle_Storage\\Oracle_Storage\\WebContent\\properties\\auth.properties");
 			Properties prop = new Properties();
 			prop.setProperty("X-Storage-User", "Storage-"+cloud_storage_container+":"+cloud_username);
 			prop.setProperty("X-Storage-Pass", cloud_password);
@@ -61,7 +63,7 @@ public class StorageAuth {
 		try {
 			
 			HttpClient client = new DefaultHttpClient();
-			HttpGet getAuthReq = new HttpGet(getAuthURL());
+			HttpGet getAuthReq = new HttpGet(new GetURLs().getAuthURL());
 			String[] auth_props = getAuthProps();
 
 			// add request header
@@ -72,7 +74,7 @@ public class StorageAuth {
 			HttpResponse authResponse = client.execute(getAuthReq);
 
 			Header[] responseHeaders = authResponse.getAllHeaders();
-			FileOutputStream fileOutputStream = new FileOutputStream("D:\\Workspace_I\\Oracle_Storage\\WebContent\\properties\\auth.properties");
+			FileOutputStream fileOutputStream = new FileOutputStream("D:\\Oracle_Storage\\Oracle_Storage\\WebContent\\properties\\auth.properties");
 			Properties prop = new Properties();
 			prop.setProperty("X-Storage-User",  auth_props[0]);
 			prop.setProperty("X-Storage-Pass", 	auth_props[1]);
@@ -100,7 +102,7 @@ public class StorageAuth {
 
 		try {
 
-			input = new FileInputStream("D:\\Workspace_I\\Oracle_Storage\\WebContent\\properties\\urls.properties");
+			input = new FileInputStream("D:\\Oracle_Storage\\Oracle_Storage\\WebContent\\properties\\urls.properties");
 
 			prop.load(input);
 
@@ -128,7 +130,7 @@ public class StorageAuth {
 
 		try {
 
-			input = new FileInputStream("D:\\Workspace_I\\Oracle_Storage\\WebContent\\properties\\auth.properties");
+			input = new FileInputStream("D:\\Oracle_Storage\\Oracle_Storage\\WebContent\\properties\\auth.properties");
 
 			prop.load(input);
 

@@ -15,6 +15,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.oracle.storage.helper.GetURLs;
+
 public class CreateContainer {
 
 	final static Logger logger = Logger.getLogger(CreateContainer.class.getSimpleName()) ;
@@ -28,11 +30,11 @@ public class CreateContainer {
 		try {
 
 			HttpClient client = new DefaultHttpClient();
-			logger.info(getContainerURL().toString()+"/"+cloud_container_name);
-			HttpPut getContinerRequest = new HttpPut(getContainerURL().toString()+"/"+cloud_container_name);
+			logger.info(new GetURLs().getContainerURL().toString()+"/"+cloud_container_name);
+			HttpPut getContinerRequest = new HttpPut(new GetURLs().getContainerURL().toString()+"/"+cloud_container_name);
 
 			// add request header
-			getContinerRequest.addHeader("X-Auth-Token", getAuthHeaders().get("X-Auth-Token"));
+			getContinerRequest.addHeader("X-Auth-Token", new GetURLs().getAuthHeaders().get("X-Auth-Token"));
 
 			HttpResponse containerResponse = client.execute(getContinerRequest);
 
@@ -60,7 +62,7 @@ public class CreateContainer {
 
 	}
 
-	private Map<String, String> getAuthHeaders() {
+	/*private Map<String, String> getAuthHeaders() {
 		Map<String, String> authMap = new HashMap<>();
 
 		Properties prop = new Properties();
@@ -116,7 +118,7 @@ public class CreateContainer {
 		}
 		return auth_url;
 
-	}
+	}*/
 
 	public static void main(String[] args) {
 		GetContainers containers = new GetContainers();
