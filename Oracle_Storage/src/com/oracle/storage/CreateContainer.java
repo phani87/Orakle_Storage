@@ -50,7 +50,7 @@ public class CreateContainer {
 					new StorageAuth().getAuthToken();
 					new CreateContainer().createContainerImpl(cloud_container_name);
 				}
-				result.append("\"containerName"+Integer.toString(i)+"\" : \""+line+"\", \n");
+				result.append("\"containerName\" : \""+line+"\", \n");
 				i++;
 			}
 			result.append("\"totalConatiner\" :\""+Integer.toString(i-1)+"\"\n}");

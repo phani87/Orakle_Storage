@@ -23,7 +23,7 @@ public class GetContainers {
 
 	public String getContainerList() {
 		logger.info("-------GET CONTAINER LIST---------");
-		StringBuffer result = null;
+		StringBuilder result = null;
 
 
 		try {
@@ -39,15 +39,22 @@ public class GetContainers {
 
 			BufferedReader rd = new BufferedReader(new InputStreamReader(containerResponse.getEntity().getContent()));
 
-			result = new StringBuffer();
-			result.append("{\n");
+			result = new StringBuilder();
+			result.append("{\"container\": [");
 			int i=1;
 			String line = "";
 			while ((line = rd.readLine()) != null) {
-					result.append("\"containerName"+Integer.toString(i)+"\" : \""+line+"\", \n");
+				
+				if("Token not found in cache".equalsIgnoreCase(line)) {
+					new StorageAuth().getAuthToken();
+					new GetContainers().getContainerList();
+				}
+					result.append("{\"containerName\" : \""+line+"\" },");
 					i++;
 			}
-			result.append("\"totalConatiner\" :\""+Integer.toString(i-1)+"\"\n}");
+			result.deleteCharAt((result.length()-1));
+			result.append("],\"totalConatiner\" :\""+Integer.toString(i-1)+"\"");
+			result.append("}");
 			// return result.toString();
 		} catch (Exception e) {
 			e.printStackTrace();

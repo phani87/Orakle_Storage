@@ -9,14 +9,19 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
+import com.oracle.storage.GetContainers;
 import com.oracle.storage.ListContainerObjects;
 import com.oracle.storage.StorageAuth;
+import com.oracle.storage.rest.pojo.ContainerObjects;
+import com.oracle.storage.rest.pojo.LoginUser;
 
 @Path("/listObjs")
-public class ListContainerObjectsRest {
+public class ListContainerObjectsRest{
 
 	
 	StorageAuth storageAuth;
@@ -24,41 +29,18 @@ public class ListContainerObjectsRest {
 	final static Logger logger = Logger.getLogger(ListContainerObjectsRest.class.getSimpleName());
 	
 	
-	/*@GET
-    @Produces({MediaType.APPLICATION_JSON})
-	public String getContainerList() throws IOException{
-			logger.info("---------API CALL START---------");
-			//storageAuth = new StorageAuth();
-			listContainerObjects = new ListContainerObjects();
-			//storageAuth.getAuthToken(cloud_username,cloud_password,cloud_storage_container);
-			String containerRespose = listContainerObjects.getContainerListObjects(cloud_container_name);
-			logger.info("---------API CALL END---------");
-			 
-			//JsonNode jsonNode = JsonLoader.fromString(containerRespose.toString());
-			//JSONObject jsonObject = new JSONObject(containerRespose.toString());
-			
-		return containerRespose;
-	}
-*/
-	
 	@POST
-    @Produces({MediaType.APPLICATION_JSON})
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String getContainerListLogin(@FormParam("container_name") String cloud_container_name,
+	@Produces({MediaType.APPLICATION_JSON})
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getContainerListLogin(ContainerObjects container,
 		    @Context HttpServletResponse servletResponse) throws IOException{
 			logger.info("---------API CALL START---------");
-			//storageAuth = new StorageAuth();
 			listContainerObjects = new ListContainerObjects();
-			//storageAuth.getAuthToken(cloud_username,cloud_password,cloud_storage_container);
-			String containerRespose = listContainerObjects.getContainerListObjects(cloud_container_name);
+			String resonse = listContainerObjects.getContainerListObjects(container.getContainerName());
 			logger.info("---------API CALL END---------");
 			 
-			//JsonNode jsonNode = JsonLoader.fromString(containerRespose.toString());
-			//JSONObject jsonObject = new JSONObject(containerRespose.toString());
-			
-		return containerRespose;
+		return Response.ok().entity(resonse).build();
 	}
-	
 	
 	
 	

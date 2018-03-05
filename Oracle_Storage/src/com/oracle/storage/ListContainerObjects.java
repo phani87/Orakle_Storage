@@ -24,7 +24,7 @@ public class ListContainerObjects {
 
 	public String getContainerListObjects(String cloud_container_name) {
 		logger.info("-------GET CONTAINER OBJECTS---------");
-		StringBuffer result = null;
+		StringBuilder result = null;
 
 
 		try {
@@ -40,7 +40,7 @@ public class ListContainerObjects {
 
 			BufferedReader rd = new BufferedReader(new InputStreamReader(containerResponse.getEntity().getContent()));
 
-			result = new StringBuffer();
+			/*result = new StringBuffer();
 			result.append("{\n");
 			int i=1;
 			String line = "";
@@ -50,6 +50,23 @@ public class ListContainerObjects {
 			}
 			result.append("\"totalObjs\" :\""+Integer.toString(i-1)+"\"\n}");
 			// return result.toString();
+*/		
+			result = new StringBuilder();
+			result.append("{\"Objects\": [");
+			int i=1;
+			String line = "";
+			while ((line = rd.readLine()) != null) {
+				
+				if("Token not found in cache".equalsIgnoreCase(line)) {
+					new StorageAuth().getAuthToken();
+					new ListContainerObjects().getContainerListObjects(cloud_container_name);
+				}
+					result.append("{\"objName\" : \""+line+"\" },");
+					i++;
+			}
+			result.deleteCharAt((result.length()-1));
+			result.append("],\"totalbjs\" :\""+Integer.toString(i-1)+"\"");
+			result.append("}");	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,19 +1,26 @@
 package com.oracle.storage;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -23,24 +30,32 @@ public class UploadObject {
 
 
 	final static Logger logger = Logger.getLogger(UploadObject.class.getSimpleName()) ;
+	public static final String PREFIX = "stream2file";
+	public static final String SUFFIX = ".tmp";
 
 
-	public String uploadObjectImpl(String cloud_container_name, InputStream cloud_object_name) {
-		logger.info("-------CREATE CONTAINER---------");
+	public String uploadObjectImpl(String cloud_container_name, InputStream cloud_input_stream, String fileName) {
+		logger.info("-------UPLOAD FILE---------");
 		StringBuffer result = null;
 
 
 		try {
-
+			
+			File tempfile = createTempFile(cloud_input_stream);
+			
 			HttpClient client = new DefaultHttpClient();
 			logger.info(new GetURLs().getContainerURL().toString()+"/"+cloud_container_name);
-			HttpPut putFileRequest = new HttpPut(new GetURLs().	getContainerURL().toString()+"/"+cloud_container_name+"/"+cloud_object_name);
+			HttpPut putFileRequest = new HttpPut(new GetURLs().	getContainerURL().toString()+"/"+cloud_container_name+"/"+fileName);
+			
+			putFileRequest.addHeader("X-Auth-Token", new GetURLs().getAuthHeaders().get("X-Auth-Token"));
+			
+			 MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+			 builder.addBinaryBody("file", tempfile,
+			      ContentType.APPLICATION_OCTET_STREAM, "file.ext");
+			 
+			    HttpEntity multipart = builder.build();
+			    putFileRequest.setEntity(multipart);
 
-			// add request header
-//			putFileRequest.addHeader("X-Auth-Token", new GetURLs().getAuthHeaders().get("X-Auth-Token"));
-//			MultipartEntity entity = new MultipartEntity();
-//			entity.addPart("file", new FileBody(new File()));
-//			post.setEntity(entity);
 
 			HttpResponse containerResponse = client.execute(putFileRequest);
 
@@ -58,11 +73,16 @@ public class UploadObject {
 				result.append("\"created_code\" :\""+response_code+"\"}");
 			}
 			else {
+				
+				new StorageAuth().getAuthToken();
+				
 				result = new StringBuffer();
 				result.append("{\n");
 				
 				result.append("\"created_response\" :\"Unsuccessful upload\",\n");
-				result.append("\"created_code\" :\"\"+451+\"\"}");
+				result.append("\"created_code\" :\"451\"}");
+				
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -70,6 +90,17 @@ public class UploadObject {
 		return result.toString();
 
 	}
+	
+	
+	
+	 private File createTempFile (InputStream in) throws IOException {
+	        final File tempFile = File.createTempFile(PREFIX, SUFFIX);
+	        tempFile.deleteOnExit();
+	        try (FileOutputStream out = new FileOutputStream(tempFile)) {
+	            IOUtils.copy(in, out);
+	        }
+	        return tempFile;
+	    } 
 
 	private Map<String, String> getAuthHeaders() {
 		Map<String, String> authMap = new HashMap<>();

@@ -11,18 +11,19 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.oracle.storage.GetContainers;
 import com.oracle.storage.StorageAuth;
+import com.oracle.storage.rest.pojo.LoginUser;
 
 @Path("/getContainer")
-public class GetContainerListRest {
+public class GetContainerListRest extends Application{
 	
 	StorageAuth storageAuth;
 	GetContainers getContainers;
@@ -31,7 +32,7 @@ public class GetContainerListRest {
 	
 	@GET
     @Produces({MediaType.APPLICATION_JSON})
-	public String getContainerList() throws IOException{
+	public Response getContainerList() throws IOException{
 			logger.info("---------API CALL START---------");
 			//storageAuth = new StorageAuth();
 			getContainers = new GetContainers();
@@ -42,15 +43,15 @@ public class GetContainerListRest {
 			//JsonNode jsonNode = JsonLoader.fromString(containerRespose.toString());
 			//JSONObject jsonObject = new JSONObject(containerRespose.toString());
 			
-		return containerRespose;
+			return Response.ok().entity(containerRespose).build();
 	}
 
-	
+/*	
 	@POST
 	@Path("/login")
     @Produces({MediaType.APPLICATION_JSON})
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String getContainerListLogin(@FormParam("username") String cloud_username,
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getContainerListLogin(@FormParam("username") String cloud_username,
 		    @FormParam("password") String cloud_password,
 		    @FormParam("storage_container") String cloud_storage_container,
 		    @Context HttpServletResponse servletResponse) throws IOException{
@@ -64,7 +65,27 @@ public class GetContainerListRest {
 			//JsonNode jsonNode = JsonLoader.fromString(containerRespose.toString());
 			//JSONObject jsonObject = new JSONObject(containerRespose.toString());
 			
-		return containerRespose;
+		return Response.ok().entity(containerRespose).build();
+	}*/
+	
+	
+	@POST
+	@Path("/login")
+    @Produces({MediaType.APPLICATION_JSON})
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getContainerListLogin(LoginUser user,
+		    @Context HttpServletResponse servletResponse) throws IOException{
+			logger.info("---------API CALL START---------");
+			storageAuth = new StorageAuth();
+			getContainers = new GetContainers();
+			storageAuth.getAuthToken(user.getUsername(),user.getPassword(),user.getIdentityDomain());
+			String containerRespose = getContainers.getContainerList();
+			logger.info("---------API CALL END---------");
+			 
+			//JsonNode jsonNode = JsonLoader.fromString(containerRespose.toString());
+			//JSONObject jsonObject = new JSONObject(containerRespose.toString());
+			
+		return Response.ok().entity(containerRespose).build();
 	}
 	
 	
