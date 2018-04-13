@@ -11,9 +11,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.oracle.storage.CreateContainer;
 import com.oracle.storage.StorageAuth;
+import com.oracle.storage.rest.pojo.ContainerObjects;
 
 
 @Path("/createContainer")
@@ -28,15 +30,15 @@ public class CreateContainerRest {
 	
 	@POST
     @Produces({MediaType.APPLICATION_JSON})
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public String getContainerList(@FormParam("containerName") String cloud_container_name,
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getContainerList(ContainerObjects container,
 			@Context HttpServletResponse servletResponse) throws IOException {
 		logger.info("---------API CALL START---------");
 		createContainer = new CreateContainer();
-		String containerRespose = createContainer.createContainerImpl(cloud_container_name);
+		String containerRespose = createContainer.createContainerImpl(container.getContainerName());
 		logger.info("---------API CALL END---------");
 
-		return containerRespose;
+		return Response.ok().entity(containerRespose).build();
 	}
 	
 	

@@ -23,7 +23,7 @@ public class ListContainerObjects {
 
 
 	public String getContainerListObjects(String cloud_container_name) {
-		logger.info("-------GET CONTAINER OBJECTS---------");
+		logger.info("-------GET LIST OBJECTS---------");
 		StringBuilder result = null;
 
 

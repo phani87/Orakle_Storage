@@ -36,20 +36,10 @@ public class CORSFilter implements Filter {
 
 		HttpServletResponse response = (HttpServletResponse) res;
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
+		response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE, HEAD");
 		response.setHeader("Access-Control-Max-Age", "3600");
-		response.setHeader("Access-Control-Allow-Headers", "x-requested-with, Content-Type, origin, accept, authorization");
+		response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
 		chain.doFilter(request, response);
-
-		/**
-		 * HttpServletResponse response = (HttpServletResponse) res;
-		 * response.setHeader("Access-Control-Allow-Origin", "*");
-		 * response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS,
-		 * DELETE"); response.setHeader("Access-Control-Max-Age", "3600");
-		 * response.setHeader("Access-Control-Allow-Headers", "x-requested-with,
-		 * Access-Control-Allow-Origin, Authorization, Content-Type");
-		 * chain.doFilter(request, response);
-		 */
 
 		logger.info("Filter Deactivated");
 	}

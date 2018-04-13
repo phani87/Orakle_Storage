@@ -15,26 +15,27 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import com.oracle.storage.BulkUploadObjects;
 import com.oracle.storage.StorageAuth;
-import com.oracle.storage.UploadObject;
 
-@Path("/uploadObj")
-public class UploadObjectRest extends Application{
+@Path("/bulkuploadObj")
+public class BulkUploadObjectsRest {
 
-	UploadObject uploadObject;
+	BulkUploadObjects bulkUploadObjects;
 	final static Logger logger = Logger.getLogger(UploadObjectRest.class.getSimpleName());
-	
+
 	@POST
-	@Produces({MediaType.APPLICATION_JSON})
-	@Consumes({MediaType.MULTIPART_FORM_DATA})
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response uploadToContainer(@FormDataParam("containerName") String cloud_container_name,
-            @FormDataParam("file") InputStream cloud_input_stream,
-            @FormDataParam("file") FormDataContentDisposition fileDetail) throws IOException {
+			@FormDataParam("file") InputStream cloud_input_stream,
+			@FormDataParam("file") FormDataContentDisposition fileDetail) throws IOException {
 		logger.info("---------API CALL START---------");
-		uploadObject = new UploadObject();
-		String containerRespose = uploadObject.uploadObjectImpl(cloud_container_name, cloud_input_stream, fileDetail.getFileName());
+		bulkUploadObjects = new BulkUploadObjects();
+		String containerRespose = bulkUploadObjects.bulkUploadObjectImpl(cloud_container_name, cloud_input_stream,
+				fileDetail.getFileName());
 		logger.info("---------API CALL END---------");
-		
+
 		return Response.ok().entity(containerRespose).build();
 	}
 

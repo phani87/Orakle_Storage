@@ -7,15 +7,17 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import com.oracle.storage.helper.GetURLs;	
+import com.oracle.storage.helper.GetURLs;
 
-public class DeleteContainer {
+public class DeleteContainerObjects {
+	
+
 
 	final static Logger logger = Logger.getLogger(DeleteContainer.class.getSimpleName()) ;
 
 
-	public String deleteContainerImpl(String cloud_container_name) {
-		logger.info("-------CREATE CONTAINER---------");
+	public String deleteContainerObjectsImpl(String cloud_container_name, String cloud_object_name) {
+		logger.info("-------DELETE CONTAINER OBJECTS START--------");
 		StringBuffer result = null;
 
 
@@ -23,7 +25,7 @@ public class DeleteContainer {
 
 			HttpClient client = new DefaultHttpClient();
 			logger.info(new GetURLs().getContainerURL().toString()+"/"+cloud_container_name);
-			HttpDelete getContinerRequest = new HttpDelete(new GetURLs().getContainerURL().toString()+"/"+cloud_container_name);
+			HttpDelete getContinerRequest = new HttpDelete(new GetURLs().getContainerURL().toString()+"/"+cloud_container_name+"/"+ cloud_object_name);
 
 			// add request header
 			getContinerRequest.addHeader("X-Auth-Token",  new GetURLs().getAuthHeaders().get("X-Auth-Token") );
@@ -52,6 +54,7 @@ public class DeleteContainer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		logger.info("-------DELETE CONTAINER OBJECTS END--------");
 		return result.toString();
 
 	}
@@ -61,6 +64,8 @@ public class DeleteContainer {
 		System.out.println(containers.getContainerList());
 	}
 	
+
+
 
 
 

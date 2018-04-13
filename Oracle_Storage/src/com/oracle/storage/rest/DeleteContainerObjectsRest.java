@@ -13,36 +13,28 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.oracle.storage.DeleteContainer;
+import com.oracle.storage.DeleteContainerObjects;
 import com.oracle.storage.StorageAuth;
 import com.oracle.storage.rest.pojo.ContainerObjects;
 
-@Path("/deleteContainer")
-public class DeleteContainerRest {
+@Path("/deleteContainerObjs")
+public class DeleteContainerObjectsRest {
 
-
-	
 	StorageAuth storageAuth;
-	DeleteContainer deleteContainer;
+	DeleteContainerObjects deleteContainerObjects;
 	final static Logger logger = Logger.getLogger(DeleteContainerRest.class.getSimpleName());
-	
 
-	
 	@POST
-    @Produces({MediaType.APPLICATION_JSON})
+	@Produces({ MediaType.APPLICATION_JSON })
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getContainerList(ContainerObjects container,
-			@Context HttpServletResponse servletResponse) throws IOException {
+	public Response deleteContainerObjectsRest(ContainerObjects container, @Context HttpServletResponse servletResponse)
+			throws IOException {
 		logger.info("---------API CALL START---------");
-		deleteContainer = new DeleteContainer();
-		String containerRespose = deleteContainer.deleteContainerImpl(container.getContainerName());
+		deleteContainerObjects = new DeleteContainerObjects();
+		String containerRespose = deleteContainerObjects.deleteContainerObjectsImpl(container.getContainerName(), container.getObjectName());
 		logger.info("---------API CALL END---------");
 
-		return  Response.ok().entity(containerRespose).build();
+		return Response.ok().entity(containerRespose).build();
 	}
-	
-	
-
-
-
 
 }

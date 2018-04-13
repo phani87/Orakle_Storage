@@ -32,6 +32,7 @@ public class GetContainerListRest extends Application{
 	
 	@GET
     @Produces({MediaType.APPLICATION_JSON})
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getContainerList() throws IOException{
 			logger.info("---------API CALL START---------");
 			//storageAuth = new StorageAuth();

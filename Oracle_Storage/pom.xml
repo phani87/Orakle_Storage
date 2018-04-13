@@ -123,6 +123,16 @@
   		<artifactId>jersey-media-moxy</artifactId>
   		<version>2.26</version>
   	</dependency>
+  	<dependency>
+  		<groupId>com.google.guava</groupId>
+  		<artifactId>guava</artifactId>
+  		<version>23.3-jre</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.squareup.okhttp</groupId>
+  		<artifactId>okhttp</artifactId>
+  		<version>2.7.5</version>
+  	</dependency>
   </dependencies>
   <packaging>war</packaging>
 </project>
