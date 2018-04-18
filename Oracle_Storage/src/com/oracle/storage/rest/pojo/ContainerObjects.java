@@ -4,6 +4,7 @@ public class ContainerObjects {
 
 	private String containerName;
 	private String objectName;
+	private String fileName;
 
 	public String getContainerName() {
 		return containerName;
@@ -33,6 +34,16 @@ public class ContainerObjects {
 	 */
 	public void setObjectName(String objectName) {
 		this.objectName = objectName;
+	}
+
+
+	public String getFileName() {
+		return fileName;
+	}
+
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 }
