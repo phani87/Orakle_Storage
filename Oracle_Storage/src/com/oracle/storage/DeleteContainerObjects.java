@@ -48,7 +48,7 @@ public class DeleteContainerObjects {
 				result.append("{\n");
 				
 				result.append("\"delete_response\" :\"Unsuccessful Delete\",\n");
-				result.append("\"delete_code\" :\"\"+450+\"\"}");
+				result.append("\"delete_code\" :\"\"450\"\"}");
 			}
 			
 		} catch (Exception e) {

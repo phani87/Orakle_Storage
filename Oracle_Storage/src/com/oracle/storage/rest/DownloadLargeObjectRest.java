@@ -16,14 +16,13 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import com.oracle.storage.BulkUploadObjects;
-import com.oracle.storage.DownloadLargeObjects;
 import com.oracle.storage.DownloadObjects;
 import com.oracle.storage.rest.pojo.ContainerObjects;
 
-@Path("/downloadObj")
-public class DownloadObjectRest {
+@Path("/downloadlargeObj")
+public class DownloadLargeObjectRest {
 
-	DownloadLargeObjects downloadLargeObjects;
+	DownloadObjects downloadObjs;
 	final static Logger logger = Logger.getLogger(UploadObjectRest.class.getSimpleName());
 
 	@POST
@@ -31,8 +30,9 @@ public class DownloadObjectRest {
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response uploadToContainer(ContainerObjects container) throws IOException {
 		logger.info("---------API CALL START---------");
-		downloadLargeObjects = new DownloadLargeObjects();
-		byte[] rd = downloadLargeObjects.downloadLargeObjectsImpl(container.getContainerName(), container.getObjectName(), container.getFileName());
+		downloadObjs = new DownloadObjects();
+		String containerRespose = null;
+		byte[] rd = downloadObjs.downloadObjectsImpl(container.getContainerName(), container.getObjectName(), container.getFileName());
 		logger.info("---------API CALL END---------");
 		return Response.ok().entity(rd).build();
 	}

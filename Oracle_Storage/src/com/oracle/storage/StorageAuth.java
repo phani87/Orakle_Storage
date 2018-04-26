@@ -37,7 +37,7 @@ public class StorageAuth {
 			HttpResponse authResponse = client.execute(getAuthReq);
 
 			Header[] responseHeaders = authResponse.getAllHeaders();
-			FileOutputStream fileOutputStream = new FileOutputStream("D:\\Oracle_Storage\\Oracle_Storage\\WebContent\\properties\\auth.properties");
+			FileOutputStream fileOutputStream = new FileOutputStream("C:\\Tomcat\\properties\\auth.properties");
 			Properties prop = new Properties();
 			prop.setProperty("X-Storage-User", "Storage-"+cloud_storage_container+":"+cloud_username);
 			prop.setProperty("X-Storage-Pass", cloud_password);
@@ -74,7 +74,7 @@ public class StorageAuth {
 			HttpResponse authResponse = client.execute(getAuthReq);
 
 			Header[] responseHeaders = authResponse.getAllHeaders();
-			FileOutputStream fileOutputStream = new FileOutputStream("D:\\Oracle_Storage\\Oracle_Storage\\WebContent\\properties\\auth.properties");
+			FileOutputStream fileOutputStream = new FileOutputStream("C:\\Tomcat\\properties\\auth.properties");
 			Properties prop = new Properties();
 			prop.setProperty("X-Storage-User",  auth_props[0]);
 			prop.setProperty("X-Storage-Pass", 	auth_props[1]);
@@ -102,7 +102,7 @@ public class StorageAuth {
 
 		try {
 
-			input = new FileInputStream("D:\\Oracle_Storage\\Oracle_Storage\\WebContent\\properties\\urls.properties");
+			input = new FileInputStream("C:\\Tomcat\\properties\\urls.properties");
 
 			prop.load(input);
 
@@ -130,7 +130,7 @@ public class StorageAuth {
 
 		try {
 
-			input = new FileInputStream("D:\\Oracle_Storage\\Oracle_Storage\\WebContent\\properties\\auth.properties");
+			input = new FileInputStream("C:\\Tomcat\\properties\\auth.properties");
 
 			prop.load(input);
 

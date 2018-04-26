@@ -48,17 +48,6 @@ public class ListContainerObjects {
 			}else {
 				BufferedReader rd = new BufferedReader(new InputStreamReader(containerResponse.getEntity().getContent()));
 
-				/*result = new StringBuffer();
-				result.append("{\n");
-				int i=1;
-				String line = "";
-				while ((line = rd.readLine()) != null) {
-						result.append("\"objName"+Integer.toString(i)+"\" : \""+line+"\", \n");
-						i++;
-				}
-				result.append("\"totalObjs\" :\""+Integer.toString(i-1)+"\"\n}");
-				// return result.toString();
-	*/		
 				result = new StringBuilder();
 				result.append("{\"Objects\": [");
 				int i=1;
@@ -81,64 +70,6 @@ public class ListContainerObjects {
 			e.printStackTrace();
 		}
 		return result.toString();
-
-	}
-
-	private Map<String, String> getAuthHeaders() {
-		Map<String, String> authMap = new HashMap<>();
-
-		Properties prop = new Properties();
-		InputStream input = null;
-		String auth_url = "";
-
-		try {
-
-			input = new FileInputStream("D:\\Workspace_I\\Oracle_Storage\\WebContent\\properties\\auth.properties");
-
-			prop.load(input);
-
-			authMap.put("X-Auth-Token", prop.getProperty("X-Auth-Token"));
-
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return authMap;
-
-	}
-
-	private String getContainerURL() {
-		Properties prop = new Properties();
-		InputStream input = null;
-		String auth_url = "";
-
-		try {
-
-			input = new FileInputStream("D:\\Workspace_I\\Oracle_Storage\\WebContent\\properties\\urls.properties");
-
-			prop.load(input);
-
-			auth_url = prop.getProperty("CONTAINER_URL");
-
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return auth_url;
 
 	}
 

@@ -30,13 +30,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.oracle.storage.helper.GetURLs;
 
-public class DownloadObjects {
+public class DownloadLargeObjects {
 
-	final static Logger logger = Logger.getLogger(DownloadObjects.class.getSimpleName());
+	final static Logger logger = Logger.getLogger(DownloadLargeObjects.class.getSimpleName());
 	public static final String PREFIX = "stream2file";
 	public static final String SUFFIX = ".tmp";
 
-	public byte[] downloadObjectsImpl(String cloud_container_name, String cloud_objectName,
+	public byte[] downloadLargeObjectsImpl(String cloud_container_name, String cloud_objectName,
 			String cloud_fileName) {
 		logger.info("-------DOWNLOAD FILE---------");
 		StringBuffer result = null;

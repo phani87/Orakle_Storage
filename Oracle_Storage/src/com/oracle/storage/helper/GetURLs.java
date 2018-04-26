@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 public class GetURLs {
 
@@ -17,8 +18,11 @@ public class GetURLs {
 		String auth_url = "";
 
 		try {
-
-			input = new FileInputStream("D:\\Oracle_Storage\\Oracle_Storage\\WebContent\\properties\\auth.properties");
+			/*String filename = "properties/auth.properties";
+			input = this.getClass().getClassLoader().getResourceAsStream(filename);*/
+			//input =  getClass().getClassLoader().getResourceAsStream(filename);
+			//input = new FileInputStream("WebContent/properties/auth.properties");
+			input = new FileInputStream("C:\\Tomcat\\properties\\auth.properties");
 
 			prop.load(input);
 
@@ -45,8 +49,11 @@ public class GetURLs {
 		String auth_url = "";
 
 		try {
-
-			input = new FileInputStream("D:\\Oracle_Storage\\Oracle_Storage\\WebContent\\properties\\urls.properties");
+			/*String filename = "properties/urls.properties";
+			input = this.getClass().getClassLoader().getResourceAsStream(filename);*/
+			//input =  getClass().getClassLoader().getResourceAsStream(filename);
+			//input = new FileInputStream("WebContent/properties/urls.properties");
+			input = new FileInputStream("C:\\Tomcat\\properties\\urls.properties");
 
 			prop.load(input);
 
@@ -73,8 +80,12 @@ public class GetURLs {
 		String auth_url = "";
 
 		try {
-
-			input = new FileInputStream("D:\\Oracle_Storage\\Oracle_Storage\\WebContent\\properties\\urls.properties");
+			//ResourceBundle bundle = ResourceBundle.getBundle("properties/urls.properties");
+			/*String filename = "properties/urls.properties";
+			input = this.getClass().getClassLoader().getResourceAsStream(filename);*/
+			//input =  getClass().getClassLoader().getResourceAsStream(filename);
+			//input = new FileInputStream("WebContent/properties/urls.properties");
+			input = new FileInputStream("C:\\Tomcat\\properties\\urls.properties");
 
 			prop.load(input);
 
