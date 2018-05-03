@@ -6,7 +6,7 @@ Leveraging Oracle Classic Storage cloud APIs to create an application and introd
 
 ## About 
 
-Oracle Classic Storage leverages APIs, which enables you to be authenticated and once authenticated you can perform various functions. 
+Oracle Classic Storage leverages APIs, which enables you to be authenticated, once authenticated you can perform various functions which are : 
 1. Create a container 
 2. Delete a container 
 3. Create objects in container(upload)
