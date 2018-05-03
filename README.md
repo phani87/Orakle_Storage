@@ -1,4 +1,4 @@
-<img src=static/logo-new-v2.svg height=75 />
+<img src=static/download.svg height=75 />
 
 ## Oracle Storage Java Wrapper
 
