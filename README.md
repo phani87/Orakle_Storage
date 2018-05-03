@@ -16,3 +16,6 @@ Oracle Classic Storage leverages APIs, which enables you to be authenticated, on
 7. Large upload file greater than 5 GB
 8. Download large files greater than 5GB
 
+## Thanks & Acknowledgements 
+
+* https://docs.oracle.com/en/cloud/iaas/storage-cloud/cssto/managing-containers-object-storage-classic.html
